@@ -9,4 +9,6 @@ with open('../data/MOCK_DATA.csv') as file:
 
 test.print()
 print(test.dequeue())
-test.print()
+print(test.size())
+
+

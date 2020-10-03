@@ -10,6 +10,6 @@ with open('../data/MOCK_DATA.csv') as file:
 print(test)
 print(test.top())
 print(test.pop())
-test.push("Morcilla")
+test.push("David")
 print(test.size())
 print(test.empty())

@@ -1,11 +1,10 @@
 class Node:
     def __init__(self, data):
-        self.data = None
         self._data = data
         self._next = None
 
     def __str__(self):
-        return "Node:{}".format(self.data)
+        return "Node:{}".format(self._data)
 
     def getNext(self):
         return self._next
@@ -64,8 +63,9 @@ class LinkedList:
             raise Exception("Empty list")
         else:
             curr = self.head
-            while curr.getNext() != self.tail:
-                curr = curr.next
+            while curr.getNext().getNext() != self.tail:
+                print(curr)
+                curr = curr.getNext()
             curr.next = None
             self.tail = curr
 
@@ -126,7 +126,7 @@ class LinkedList:
         currNode = self.head
         currPos = 0
         while currNode:
-            currNode = currNode.next
+            currNode = currNode.getNext()
             currPos += 1
         return currPos
 
