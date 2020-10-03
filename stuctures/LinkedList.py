@@ -63,11 +63,10 @@ class LinkedList:
             raise Exception("Empty list")
         else:
             curr = self.head
-            while curr.getNext().getNext() != self.tail:
-                print(curr)
+            while curr is not self.tail:
                 curr = curr.getNext()
-            curr.next = None
-            self.tail = curr
+            curr.setNext(None)
+        return curr.getData()
 
     def find(self, data):
         currNode = self.head

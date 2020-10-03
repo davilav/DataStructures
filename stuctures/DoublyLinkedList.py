@@ -43,10 +43,13 @@ class DoublyLinkedList(object):
             return self.head.getData()
 
     def popFront(self):
+        curr = 0
         if self.head is None:
             raise Exception("Empty list")
         else:
+            curr = self.head
             self.head = self.head.getNext()
+        return curr.getData()
 
     def pushBack(self, data):
         newNode = Node(data)
@@ -64,11 +67,14 @@ class DoublyLinkedList(object):
             return self.tail.getData()
 
     def popBack(self):
+        curr = 0
         if self.head is None:
             raise Exception("Empty list")
         else:
+            curr = self.tail
             self.tail.getPrevious().setNext(None)
             self.tail = self.tail.getPrevious()
+        return curr.getData()
 
     def find(self, data):
         currNode = self.head
