@@ -5,7 +5,7 @@ test = LinkedList()
 with open('../data/MOCK_DATA.csv') as file:
     csv = csv.reader(file, delimiter=',')
     for row in file:
-        test.pushFront(row.replace('\n', ' '))
+        test.pushFront(row.replace('\n', ''))
 print(test)
 test.insert(15, "Andrés")
 print(test)
