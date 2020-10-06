@@ -13,3 +13,7 @@ start = default_timer()
 test.size()
 end = default_timer()
 print((end - start), "Seconds")
+
+start = default_timer()
+test.size()
+end = default_timer()
