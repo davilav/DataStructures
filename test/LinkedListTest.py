@@ -2,7 +2,7 @@ import csv
 from stuctures.LinkedList import LinkedList
 
 test = LinkedList()
-with open('../data/MOCK_DATA.csv') as file:
+with open('../data/convert.csv') as file:
     csv = csv.reader(file, delimiter=',')
     for row in file:
         test.pushFront(row.replace('\n', ''))
