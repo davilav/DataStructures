@@ -9,7 +9,6 @@ with open('../data/MOCK_DATA.csv') as file:
         test.pushBack(row.replace('\n', ''))
 
 print(test)
-print(test.insert(5, "Babyface7u7"))
 print(test)
 print(test.empty())
 print(test.size())

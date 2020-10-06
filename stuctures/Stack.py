@@ -16,7 +16,7 @@ class Person:
         self._priority = priority
 
     def __str__(self):
-        return "p:{}, v:{}".format(self._priority, self._value)
+        return "(p:{}, v:{}) ".format(self._priority, self._value)
 
 
 class Stack:
@@ -39,6 +39,8 @@ class Stack:
         return self.stack == []
 
     def top(self):
+        if(len(self.stack) == 0):
+            return None
         return self.stack[len(self.stack) - 1]
 
     def __str__(self):
