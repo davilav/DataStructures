@@ -19,13 +19,18 @@ class PriorityQueue(object):
         if self.stack.empty():
             self.stack.push(Person(priority, value))
         else:
-            lis = []
             res = self.stack.top()
-            while res.getPriority() >= priority and res is not None:
-                lis.append(self.stack.pop())
+            stack2 = Stack()
+            print(res)
+            while (res is not None) and int(res.getPriority() >= priority):
+                stack2.push( res )
+                self.stack.pop()
+                res = self.stack.top()
             self.stack.push(Person(priority, value))
-            for i in lis:
-                self.stack.push(i)
+            while not stack2.empty():
+                self.stack.push(stack2.pop())
+
+
 
     def extract(self):
         return self.stack.pop()
@@ -35,8 +40,11 @@ if __name__ == '__main__':
     myQueue = PriorityQueue()
     myQueue.insert(2, 9)
     myQueue.insert(3, 8)
-    myQueue.insert(4, 6)
-    myQueue.insert(5, 7)
+    myQueue.insert(4, 2)
+    myQueue.insert(4, 2)
+    myQueue.insert(1, 7)
+    myQueue.insert(10, 7)
+
     print(myQueue.stack)
-    print(myQueue.extract())
+    myQueue.extract()
     print(myQueue.stack)
