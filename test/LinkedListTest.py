@@ -2,13 +2,17 @@ import csv
 from stuctures.LinkedList import LinkedList
 
 test = LinkedList()
-with open('../data/convert.csv') as file:
+'''
+with open('../data/MOCK_DATA.csv') as file:
     csv = csv.reader(file, delimiter=',')
     for row in file:
         test.pushFront(row.replace('\n', ''))
-print(test)
-test.insert(15, "Andrés")
-print(test)
-print(test.erase("Andrés"))
+'''
 
-print(test)
+for i in range(10):
+    test.pushBack(i)
+
+for i in test:
+    print("i:", i)
+
+#print(test)

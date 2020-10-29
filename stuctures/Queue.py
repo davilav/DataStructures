@@ -21,10 +21,9 @@ class Queue:
     def peek(self):
         return self.queue[0]
 
-    def print(self):
+    def __print__(self):
         s = ""
         for i in self.queue:
             s = s+"{}".format(i)
         print(s)
         return s
-

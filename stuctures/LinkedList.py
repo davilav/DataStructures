@@ -23,6 +23,7 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.curr = self.head
 
     def pushFront(self, data):
         newNode = Node(data)
@@ -136,3 +137,14 @@ class LinkedList:
             res += " " + str(curr.getData())
             curr = curr.getNext()
         return res
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        current = self.curr
+        if current is None:
+            raise StopIteration
+        self.curr = current.getNext()
+        return current
+        

@@ -40,9 +40,9 @@ if __name__ == '__main__':
     myQueue = PriorityQueue()
     myQueue.insert(2, 9)
     myQueue.insert(3, 8)
-    myQueue.insert(4, 2)
-    myQueue.insert(4, 2)
     myQueue.insert(1, 7)
+    myQueue.insert(4, 2)
+    myQueue.insert(4, 5)
     myQueue.insert(10, 7)
 
     print(myQueue.stack)
