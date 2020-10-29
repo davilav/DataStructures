@@ -25,37 +25,63 @@ class Node:
     def is_leaf(self):
         return self.get_left_tree() is self.get_right_tree() is None
 
+    def n_child(self):
+        res = 0
+        if self.get_left_tree() is not None:
+            res += 1
+        if self.get_right_tree() is not None:
+            res += 1
+        return res
+
+    def __str__(self):
+        return f"Node: {str(self.get_data())}"
+
 
 class BinaryTree:
     def __init__(self):
+        self.root = None
+
+    def clear(self):
         self.root = None
 
     def empty(self):
         return self.root is None
 
     def pre_order(self):
-        def pre(node):
+        def pre(node, lis):
             if node is not None:
-                print(node.get_data())
-                pre(node.get_left_tree())
-                pre(node.get_right_tree())
-        pre(self.root)
+                lis.append(node.get_data())
+                pre(node.get_left_tree(), lis)
+                pre(node.get_right_tree(), lis)
+            return lis
+        if self.empty():
+            raise Exception()
+        else:
+            return pre(self.root, [])
 
     def in_order(self):
-        def in_or(node):
+        def in_or(node, lis):
             if node is not None:
-                in_or(node.get_left_tree())
-                print(node.get_data())
-                in_or(node.get_right_tree())
-        in_or(self.root)
+                in_or(node.get_left_tree(), lis)
+                lis.append(node.get_data())
+                in_or(node.get_right_tree(), lis)
+            return lis
+        if self.empty():
+            raise Exception()
+        else:
+            return in_or(self.root, [])
 
     def post_order(self):
-        def post(node):
+        def post(node, lis):
             if node is not None:
-                post(node.get_left_tree())
-                post(node.get_right_tree())
-                print(node.get_data())
-        post(self.root)
+                post(node.get_left_tree(), lis)
+                post(node.get_right_tree(), lis)
+                lis.append(node.get_data())
+            return lis
+        if self.empty():
+            raise Exception()
+        else:
+            return post(self.root, [])
 
     def insert(self, new_data):
         def ins(node, data):
@@ -75,13 +101,78 @@ class BinaryTree:
         else:
             ins(self.root, new_data)
 
+    def search(self, search_data):
+        def see(node, data):
+            if node is None:
+                raise Exception("No such data")
+            if node.get_data() == data:
+                return node
+            else:
+                if node.get_data() > data:
+                    return see(node.get_left_tree(), data)
+                else:
+                    return see(node.get_right_tree(), data)
+
+        if self.empty():
+            raise Exception("Empty tree")
+        else:
+            return see(self.root, search_data)
+
+    def delete(self, delete_data):
+        def del_data(node, data):
+            if node is None:
+                raise Exception("No such data")
+
+            elif node.get_left_tree().get_data() == data:
+                deleted = node.get_left_tree()
+                if deleted.n_child() == 0:
+                    node.set_left_tree(None)
+                    return deleted
+
+                elif deleted.n_child() == 1:
+                    new = None
+                    if deleted.get_left_tree() is not None:
+                        new = deleted.get_left_tree()
+                    else:
+                        new = deleted.get_right_tree()
+                    node.set_left_tree(new)
+                    return deleted
+
+            elif node.get_right_tree().get_data() == data:
+                deleted = node.get_right_tree()
+                if deleted.n_child() == 0:
+                    node.set_left_tree(None)
+                    return deleted
+
+                elif deleted.n_child() == 1:
+                    new = None
+                    if deleted.get_left_tree() is not None:
+                        new = deleted.get_left_tree()
+                    else:
+                        new = deleted.get_right_tree()
+                    node.set_right_tree(new)
+                    return deleted
+
+            else:
+                if node.get_data() > data:
+                    return del_data(node.get_left_tree(), data)
+                else:
+                    return del_data(node.get_right_tree(), data)
+
+        if self.empty():
+            raise Exception()
+        else:
+            return del_data(self.root, delete_data)
+
 
 binTree = BinaryTree()
 binTree.insert(10)
 binTree.insert(5)
 binTree.insert(12)
 binTree.insert(3)
-binTree.insert(7)
 binTree.insert(11)
-binTree.insert(15)
-binTree.in_order()
+# binTree.insert(15)
+
+print(binTree.pre_order())
+print(binTree.delete(12))
+print(binTree.pre_order())
