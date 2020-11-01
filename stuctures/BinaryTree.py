@@ -54,6 +54,7 @@ class BinaryTree:
                 pre(node.get_left_tree(), lis)
                 pre(node.get_right_tree(), lis)
             return lis
+
         if self.empty():
             raise Exception()
         else:
@@ -66,6 +67,7 @@ class BinaryTree:
                 lis.append(node.get_data())
                 in_or(node.get_right_tree(), lis)
             return lis
+
         if self.empty():
             raise Exception()
         else:
@@ -78,6 +80,7 @@ class BinaryTree:
                 post(node.get_right_tree(), lis)
                 lis.append(node.get_data())
             return lis
+
         if self.empty():
             raise Exception()
         else:
@@ -118,61 +121,109 @@ class BinaryTree:
         else:
             return see(self.root, search_data)
 
-    def delete(self, delete_data):
-        def del_data(node, data):
-            if node is None:
-                raise Exception("No such data")
+    def have(self, have_data):
+        try:
+            self.search(have_data)
+            return True
+        except:
+            return False
 
-            elif node.get_left_tree().get_data() == data:
-                deleted = node.get_left_tree()
-                if deleted.n_child() == 0:
-                    node.set_left_tree(None)
-                    return deleted
+    def remove(self, data):
 
-                elif deleted.n_child() == 1:
-                    new = None
-                    if deleted.get_left_tree() is not None:
-                        new = deleted.get_left_tree()
-                    else:
-                        new = deleted.get_right_tree()
-                    node.set_left_tree(new)
-                    return deleted
+        if self.root is None:
+            return False
 
-            elif node.get_right_tree().get_data() == data:
-                deleted = node.get_right_tree()
-                if deleted.n_child() == 0:
-                    node.set_left_tree(None)
-                    return deleted
+        if self.root.get_data() == data:
 
-                elif deleted.n_child() == 1:
-                    new = None
-                    if deleted.get_left_tree() is not None:
-                        new = deleted.get_left_tree()
-                    else:
-                        new = deleted.get_right_tree()
-                    node.set_right_tree(new)
-                    return deleted
+            if self.root.is_leaf():
+                deleted = self.root
+                self.root = None
+                return deleted
 
+            elif self.root.get_left_tree() and self.root.get_right_tree() is None:
+                deleted = self.root
+                self.root = self.root.get_left_tree()
+                return deleted
+
+            elif self.root.get_left_tree() is None and self.root.get_right_tree():
+                deleted = self.root()
+                self.root = self.root.get_right_tree()
+                return deleted
+            # Case 2.4: Root node has two children
             else:
-                if node.get_data() > data:
-                    return del_data(node.get_left_tree(), data)
+                move_node = self.root.get_right_tree()
+                move_node_parent = None
+                while move_node.get_left_tree():
+                    move_node_parent = move_node
+                    move_node = move_node.left
+                self.root.get_data(move_node.data)
+                if move_node.data < move_node_parent.data:
+                    move_node_parent.left = None
                 else:
-                    return del_data(node.get_right_tree(), data)
-
-        if self.empty():
-            raise Exception()
+                    move_node_parent.right = None
+                return True
+        # Find node to remove
+        parent = None
+        node = self.root
+        while node and node.data != data:
+            parent = node
+            if data < node.data:
+                node = node.left
+            elif data > node.data:
+                node = node.right
+        # Case 3: Node not found
+        if node == None or node.data != data:
+            return False
+        # Case 4: Node has no children
+        elif node.left is None and node.right is None:
+            if data < parent.data:
+                parent.left = None
+            else:
+                parent.right = None
+            return True
+        # Case 5: Node has left child only
+        elif node.left and node.right is None:
+            if data < parent.data:
+                parent.left = node.left
+            else:
+                parent.right = node.left
+            return True
+        # Case 6: Node has right child only
+        elif node.left is None and node.right:
+            if data < parent.data:
+                parent.left = node.right
+            else:
+                parent.right = node.right
+            return True
+        # Case 7: Node has left and right child
         else:
-            return del_data(self.root, delete_data)
+            move_node_parent = node
+            move_node = node.right
+            while move_node.left:
+                move_node_parent = move_node
+                move_node = move_node.left
+            node.data = move_node.data
+            if move_node.right:
+                if move_node.data < move_node_parent.data:
+                    move_node_parent.left = move_node.right
+                else:
+                    move_node_parent.right = move_node.right
+            else:
+                if move_node.data < move_node_parent.data:
+                    move_node_parent.left = None
+                else:
+                    move_node_parent.right = None
+            return True
 
 
 binTree = BinaryTree()
 binTree.insert(10)
 binTree.insert(5)
-binTree.insert(12)
 binTree.insert(3)
-binTree.insert(11)
+binTree.insert(6)
+
 # binTree.insert(15)
 
-print(binTree.pre_order())
-print(binTree.delete(12))
-print(binTree.pre_order())
+print(binTree.in_order())
+print(binTree.remove(10))
+print(binTree.in_order())
