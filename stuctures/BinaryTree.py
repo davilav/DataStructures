@@ -3,6 +3,7 @@ class Node:
         self.__data = data
         self.__left_tree = None
         self.__right_tree = None
+        self.__parent = None
 
     def get_data(self):
         return self.__data
@@ -21,6 +22,12 @@ class Node:
 
     def set_right_tree(self, tree):
         self.__right_tree = tree
+
+    def get_parent(self):
+        return self.__parent
+
+    def set_parent(self, new_parent):
+        self.__parent = new_parent
 
     def is_leaf(self):
         return self.get_left_tree() is self.get_right_tree() is None
@@ -69,7 +76,7 @@ class BinaryTree:
             return lis
 
         if self.empty():
-            raise Exception()
+            raise Exception("Empty Tree")
         else:
             return in_or(self.root, [])
 
@@ -87,22 +94,24 @@ class BinaryTree:
             return post(self.root, [])
 
     def insert(self, new_data):
-        def ins(node, data):
-            if node.get_data() > data:
+        def ins(node, new_node):
+            if node.get_data() > new_node.get_data():
                 if node.get_left_tree() is None:
-                    node.set_left_tree(Node(data))
+                    node.set_left_tree(new_node)
+                    new_node.set_parent(node)
                 else:
-                    ins(node.get_left_tree(), data)
+                    ins(node.get_left_tree(), new_node)
             else:
                 if node.get_right_tree() is None:
-                    node.set_right_tree(Node(data))
+                    node.set_right_tree(new_node)
+                    new_node.set_parent(node)
                 else:
-                    ins(node.get_right_tree(), data)
+                    ins(node.get_right_tree(), new_node)
 
         if self.empty():
             self.root = Node(new_data)
         else:
-            ins(self.root, new_data)
+            ins(self.root, Node(new_data))
 
     def search(self, search_data):
         def see(node, data):
@@ -215,15 +224,49 @@ class BinaryTree:
                     move_node_parent.right = None
             return True
 
+    def previous_element(self, data):
+        def previous(node):
+            if node.get_left_tree():
+                return right_desc(node)
+            else:
+                return left_ancestor(node)
 
+        def right_desc(node):
+            node_ref = node.get_left_tree()
+            while node_ref.get_right_tree():
+                node_ref = node_ref.get_right_tree()
+            return node_ref
+
+        def left_ancestor(node):
+            if node.get_parent().get_data() < node.get_data():
+                return node.get_parent()
+            else:
+                return left_ancestor(node.get_parent())
+
+        return previous(self.search(data))
+
+    def array_to_bst(self, new_array_nums):
+        def array(arr):
+            arr.sort()
+            if not arr:
+                return None
+            mid = (len(arr)) // 2
+            root = Node(arr[mid])
+            root.set_left_tree(array(arr[:mid]))
+            root.set_right_tree(array(arr[mid+1:]))
+            return root
+
+        self.root = array(new_array_nums)
+
+
+# Caso de prueba 1
 binTree = BinaryTree()
-binTree.insert(10)
-binTree.insert(5)
-binTree.insert(3)
-binTree.insert(6)
-
-# binTree.insert(15)
-
+arr = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23]
+binTree.array_to_bst(arr)
 print(binTree.in_order())
-print(binTree.remove(10))
-print(binTree.in_order())
+
+#Caso de prueba 2
+binTree2 = BinaryTree()
+arr = [6, 9, 4, 2, 3, 7, 11, 15, 12, 10, 1, 13]
+binTree2.array_to_bst(arr)
+print(binTree2.in_order())
